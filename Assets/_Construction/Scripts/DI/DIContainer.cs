@@ -88,7 +88,7 @@ namespace DI
 
                 if (_parentContainer != null)
                 {
-                    return (T)_parentContainer.Resolve<T>(tag);
+                    return _parentContainer.Resolve<T>(tag);
                 }
             }
             finally
