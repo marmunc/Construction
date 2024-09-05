@@ -1,10 +1,9 @@
 ﻿using _Construction.Scripts.Utils;
-using Assets._Construction.Scripts.Game.Gameplay.Root;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace _Construction.Scripts
+namespace _Construction.Scripts.Game
 {
     public class GameEntryPoint
     {
@@ -44,6 +43,12 @@ namespace _Construction.Scripts
                 return;
             }
 
+            if (sceneName == SceneNames.MAIN_MENU)
+            {
+                _coroutines.StartCoroutine(LoadAndStartMainMenu());
+                return;
+            }
+
             if (sceneName != SceneNames.BOOT)
             {
                 return;
@@ -63,9 +68,35 @@ namespace _Construction.Scripts
 
             //
             var sceneEntryPoint = Object.FindFirstObjectByType<GameplayEntryPoint>();
-            sceneEntryPoint.Run();
+            sceneEntryPoint.Run(_uiRoot);
+
+            sceneEntryPoint.GoToMainMenuSceneRequested += () =>
+            {
+                _coroutines.StartCoroutine(LoadAndStartMainMenu());
+            };
 
             _uiRoot.HideLoadingScreen();
+        }
+
+        private IEnumerator LoadAndStartMainMenu()
+        {
+            _uiRoot.ShowLoadingScreen();
+
+            yield return LoadScene(SceneNames.BOOT);
+            yield return LoadScene(SceneNames.MAIN_MENU);
+
+            yield return new WaitForSeconds(1f);
+
+            //
+            var sceneEntryPoint = Object.FindFirstObjectByType<MainMenuEntryPoint>();
+            sceneEntryPoint.Run(_uiRoot);
+
+            _uiRoot.HideLoadingScreen();
+
+            sceneEntryPoint.GoToGameplaySceneRequested += () =>
+            {
+                _coroutines.StartCoroutine(LoadAndStartGameplay());
+            };
         }
 
         private IEnumerator LoadScene(string sceneName)
