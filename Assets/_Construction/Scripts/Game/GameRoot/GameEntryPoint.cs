@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using R3;
+using BaCon;
 
 namespace _Construction.Scripts.Game
 {
@@ -11,6 +12,8 @@ namespace _Construction.Scripts.Game
         private static GameEntryPoint _instance;
         private Coroutines _coroutines;
         private UIRootView _uiRoot;
+        private readonly DIContainer _rootContainer = new(); // Сюда можем положить состояния, сервисы аналитики, настройки (базовые штуки, которые используются во всем проекте)
+        private DIContainer _cachedSceneContainer;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void AutostartGame()
@@ -30,6 +33,9 @@ namespace _Construction.Scripts.Game
             var prefabUIRoot = Resources.Load<UIRootView>("UIRoot");
             _uiRoot = Object.Instantiate(prefabUIRoot);
             Object.DontDestroyOnLoad(_uiRoot.gameObject);
+
+            _rootContainer.RegisterInstance(_uiRoot);
+            _rootContainer.RegisterFactory(_ => new SomeCommonService()).AsSingle();
         }
 
 
@@ -62,15 +68,16 @@ namespace _Construction.Scripts.Game
         private IEnumerator LoadAndStartGameplay(GameplayEnterParams enterParams)
         {
             _uiRoot.ShowLoadingScreen();
+            _cachedSceneContainer?.Dispose();
 
             yield return LoadScene(SceneNames.BOOT);
             yield return LoadScene(SceneNames.GAMEPLAY);
 
             yield return new WaitForSeconds(1f);
 
-            //
+            var gameplayContainer = _cachedSceneContainer = new DIContainer(_rootContainer);
             var sceneEntryPoint = Object.FindFirstObjectByType<GameplayEntryPoint>();
-            sceneEntryPoint.Run(_uiRoot, enterParams).Subscribe(gameplayExitParams =>
+            sceneEntryPoint.Run(gameplayContainer, enterParams).Subscribe(gameplayExitParams =>
             {
                 _coroutines.StartCoroutine(LoadAndStartMainMenu(gameplayExitParams.MainMenuEnterParams));
             });
@@ -81,22 +88,26 @@ namespace _Construction.Scripts.Game
         private IEnumerator LoadAndStartMainMenu(MainMenuEnterParams enterParams = null)
         {
             _uiRoot.ShowLoadingScreen();
+            _cachedSceneContainer?.Dispose();
 
             yield return LoadScene(SceneNames.BOOT);
             yield return LoadScene(SceneNames.MAIN_MENU);
 
             yield return new WaitForSeconds(1f);
 
-            //
+            var mainMenuContainer = _cachedSceneContainer = new DIContainer(_rootContainer);
             var sceneEntryPoint = Object.FindFirstObjectByType<MainMenuEntryPoint>();
-            sceneEntryPoint.Run(_uiRoot, enterParams).Subscribe(mainMenuExitParams =>
+            sceneEntryPoint.Run(mainMenuContainer, enterParams).Subscribe(mainMenuExitParams =>
             {
                 var targetSceneName = mainMenuExitParams.TargetSceneEnterParams.SceneName;
 
                 if (targetSceneName == SceneNames.GAMEPLAY)
                 {
                     _coroutines.StartCoroutine(LoadAndStartGameplay(mainMenuExitParams.TargetSceneEnterParams.As<GameplayEnterParams>()));
-                }              
+                }
+                
+                // Дальше вписывать сцены
+
             });
 
             _uiRoot.HideLoadingScreen();

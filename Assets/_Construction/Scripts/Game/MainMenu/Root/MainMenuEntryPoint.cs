@@ -1,4 +1,7 @@
-﻿using R3;
+﻿using BaCon;
+using Gameplay.View;
+using MainMenu.View;
+using R3;
 using UnityEngine;
 
 namespace _Construction.Scripts.Game
@@ -7,8 +10,18 @@ namespace _Construction.Scripts.Game
     {
         [SerializeField] private UIMainMenuRootBinder _sceneUIRootPrefab;
 
-        public Observable<MainMenuExitParams> Run(UIRootView uiRoot, MainMenuEnterParams enterParams)
+        public Observable<MainMenuExitParams> Run(DIContainer mainMenuContainer, MainMenuEnterParams enterParams)
         {
+            MainMenuRegistrations.Register(mainMenuContainer, enterParams);
+            var mainMenuViewModelsContainer = new DIContainer(mainMenuContainer);
+            MainMenuViewModelsRegistrations.Register(mainMenuViewModelsContainer);
+
+            ///
+
+            // For test:
+            mainMenuViewModelsContainer.Resolve<UIMainMenuRootViewModel>();
+
+            var uiRoot = mainMenuContainer.Resolve<UIRootView>();
             var uiScene = Instantiate(_sceneUIRootPrefab);
             uiRoot.AttachSceneUI(uiScene.gameObject);
 
