@@ -34,7 +34,11 @@ namespace _Construction.Scripts.Game
             _uiRoot = Object.Instantiate(prefabUIRoot);
             Object.DontDestroyOnLoad(_uiRoot.gameObject);
 
+            var gameStateProvider = new PlayerPrefsGameStateProvider();
+            gameStateProvider.LoadSettingsState();
+            _rootContainer.RegisterInstance<IGameStateProvider>(gameStateProvider);
             _rootContainer.RegisterInstance(_uiRoot);
+
             _rootContainer.RegisterFactory(_ => new SomeCommonService()).AsSingle();
         }
 
@@ -74,6 +78,10 @@ namespace _Construction.Scripts.Game
             yield return LoadScene(SceneNames.GAMEPLAY);
 
             yield return new WaitForSeconds(1f);
+
+            var isGameStatLoaded = false;
+            _rootContainer.Resolve<IGameStateProvider>().LoadGameState().Subscribe(_ => isGameStatLoaded = true);
+            yield return new WaitUntil(() => isGameStatLoaded);
 
             var gameplayContainer = _cachedSceneContainer = new DIContainer(_rootContainer);
             var sceneEntryPoint = Object.FindFirstObjectByType<GameplayEntryPoint>();
