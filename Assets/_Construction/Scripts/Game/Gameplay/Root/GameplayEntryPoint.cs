@@ -34,15 +34,10 @@ namespace _Construction.Scripts.Game
 
             /// 
 
-
-            var cmd = new CommandProcessor(gameStateProvider);
-
-            cmd.RegisterHandler(new CmdPlaceBuildingHandler(gameStateProvider.GameState));
-
-            ///
-            cmd.Process(new CmdPlaceBuilding("Васян", GetRandomPosition()));
-            cmd.Process(new CmdPlaceBuilding("Стасян", GetRandomPosition()));
-            cmd.Process(new CmdPlaceBuilding("Борян", GetRandomPosition()));
+            var buildingsService = gameplayContainer.Resolve<BuildingsService>();
+            buildingsService.PlaceBuilding("Васян", GetRandomPosition());
+            buildingsService.PlaceBuilding("Стасян", GetRandomPosition());
+            buildingsService.PlaceBuilding("Борян", GetRandomPosition());
 
             /// 
 

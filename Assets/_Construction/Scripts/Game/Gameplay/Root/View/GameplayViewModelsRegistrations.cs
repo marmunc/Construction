@@ -1,5 +1,4 @@
-﻿using _Construction.Scripts.Game;
-using BaCon;
+﻿using BaCon;
 
 namespace Gameplay.View
 {
@@ -7,7 +6,7 @@ namespace Gameplay.View
     {
         public static void Register(DIContainer container)
         {
-            container.RegisterFactory(c => new UIGameplayRootViewModel(c.Resolve<SomeGameplayService>())).AsSingle();
+            container.RegisterFactory(c => new UIGameplayRootViewModel()).AsSingle();
             container.RegisterFactory(c => new WorldGameplayViewModel()).AsSingle();
         }
     }

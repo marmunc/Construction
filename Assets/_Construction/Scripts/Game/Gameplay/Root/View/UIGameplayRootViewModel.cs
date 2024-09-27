@@ -1,10 +1,8 @@
-﻿using _Construction.Scripts.Game;
-
-namespace Gameplay.View
+﻿namespace Gameplay.View
 {
     public class UIGameplayRootViewModel
     {
-        public UIGameplayRootViewModel(SomeGameplayService someGameplayService)
+        public UIGameplayRootViewModel()
         {
 
         }

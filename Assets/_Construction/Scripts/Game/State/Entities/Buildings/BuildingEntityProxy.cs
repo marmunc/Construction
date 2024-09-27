@@ -5,9 +5,9 @@ namespace _Construction.Scripts.Game
 {
     public class BuildingEntityProxy
     {
+        public BuildingEntity Origin { get; }
         public int Id { get; }
         public string TypeId { get; }
-        public BuildingEntity Origin { get; }
 
         public ReactiveProperty<Vector3Int> Position { get; }
         public ReactiveProperty<int> Level { get; }

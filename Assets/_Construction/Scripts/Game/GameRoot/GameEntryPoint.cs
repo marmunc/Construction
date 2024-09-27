@@ -75,13 +75,15 @@ namespace _Construction.Scripts.Game
             _cachedSceneContainer?.Dispose();
 
             yield return LoadScene(SceneNames.BOOT);
-            yield return LoadScene(SceneNames.GAMEPLAY);
-
-            yield return new WaitForSeconds(1f);
 
             var isGameStatLoaded = false;
             _rootContainer.Resolve<IGameStateProvider>().LoadGameState().Subscribe(_ => isGameStatLoaded = true);
             yield return new WaitUntil(() => isGameStatLoaded);
+
+            yield return LoadScene(SceneNames.GAMEPLAY);
+
+            yield return new WaitForSeconds(1f);
+
 
             var gameplayContainer = _cachedSceneContainer = new DIContainer(_rootContainer);
             var sceneEntryPoint = Object.FindFirstObjectByType<GameplayEntryPoint>();
