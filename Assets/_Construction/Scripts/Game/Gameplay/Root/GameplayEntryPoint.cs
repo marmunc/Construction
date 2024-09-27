@@ -10,6 +10,7 @@ namespace _Construction.Scripts.Game
     public class GameplayEntryPoint : MonoBehaviour
     {
         [SerializeField] private UIGameplayRootBinder _sceneUIRootPrefab;
+        [SerializeField] private WorldGameplayRootBinder _worldRootBinder;
 
         public Observable<GameplayExitParams> Run(DIContainer gameplayContainer, GameplayEnterParams enterParams)
         {
@@ -29,8 +30,7 @@ namespace _Construction.Scripts.Game
                           + " Id: " + building.Id
                           + ", Position: " +
                           building.Position.Value);
-            }
-            );
+            });
 
             /// 
 
@@ -42,8 +42,8 @@ namespace _Construction.Scripts.Game
             /// 
 
             // For test:
+            _worldRootBinder.Bind(gameplayViewModelsContainer.Resolve<WorldGameplayRootViewModel>());
             gameplayViewModelsContainer.Resolve<UIGameplayRootViewModel>();
-            gameplayViewModelsContainer.Resolve<WorldGameplayViewModel>();
 
             var uiRoot = gameplayContainer.Resolve<UIRootView>();
             var uiScene = Instantiate(_sceneUIRootPrefab);
