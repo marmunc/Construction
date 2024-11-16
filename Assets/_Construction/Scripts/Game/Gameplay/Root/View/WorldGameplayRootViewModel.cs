@@ -1,4 +1,6 @@
-﻿using _Construction.Scripts.Game;
+﻿using _Construction.Game.Gameplay.Services;
+using _Construction.Game.Gameplay.View.Buildings;
+using _Construction.Scripts.Game;
 using ObservableCollections;
 
 namespace Gameplay.View

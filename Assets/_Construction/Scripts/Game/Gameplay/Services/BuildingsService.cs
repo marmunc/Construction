@@ -1,25 +1,36 @@
-using _Construction.cmd;
-using Gameplay.View;
-using ObservableCollections;
 using System;
+using System.Collections.Generic;
+using _Construction.cmd;
+using _Construction.Game.Gameplay.View.Buildings;
+using _Construction.Game.Settings.Gameplay.Buildings;
+using _Construction.Scripts.Game;
+using ObservableCollections;
 using R3;
 using UnityEngine;
-using System.Collections.Generic;
 
-namespace _Construction.Scripts.Game
+namespace _Construction.Game.Gameplay.Services
 {
     public class BuildingsService
     {
         private readonly ICommandProcessor _cmd;
         private readonly ObservableList<BuildingViewModel> _allBuildings = new();
         private readonly Dictionary<int, BuildingViewModel> _buildingsMap = new();
+        private readonly Dictionary<string, BuildingSettings> _buildingSettingsMap = new();
 
         public IObservableCollection<BuildingViewModel> AllBuildings => _allBuildings;
 
-        public BuildingsService(IObservableCollection<BuildingEntityProxy> buildings, ICommandProcessor cmd)
+        public BuildingsService(
+            IObservableCollection<BuildingEntityProxy> buildings,
+            BuildingsSettings buildingsSettings,
+            ICommandProcessor cmd)
         {
             _cmd = cmd;
 
+            foreach (var buildingSettings in buildingsSettings.AllBuildings)
+            {
+                _buildingSettingsMap[buildingSettings.TypeId] = buildingSettings;
+            }
+            
             foreach (var buildingEntity in buildings)
             {
                 CreateBuildingViewModel(buildingEntity);
@@ -56,7 +67,8 @@ namespace _Construction.Scripts.Game
 
         private void CreateBuildingViewModel(BuildingEntityProxy buildingEntity)
         {
-            var buildingViewModel = new BuildingViewModel(buildingEntity, this);
+            var buildingSettings = _buildingSettingsMap[buildingEntity.TypeId];
+            var buildingViewModel = new BuildingViewModel(buildingEntity, buildingSettings, this);
             _allBuildings.Add(buildingViewModel);
             _buildingsMap[buildingEntity.Id] = buildingViewModel;
         }

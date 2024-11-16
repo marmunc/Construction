@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Construction.Scripts.Utils
+namespace _Construction.Utils
 {
     internal class Coroutines : MonoBehaviour
     {

@@ -1,11 +1,12 @@
-﻿using _Construction.cmd;
+﻿using _Construction.Game.Gameplay.Services;
+using _Construction.Scripts.Game;
 using BaCon;
 using Gameplay.View;
 using ObservableCollections;
 using R3;
 using UnityEngine;
 
-namespace _Construction.Scripts.Game
+namespace _Construction.Game.Gameplay.Root
 {
     public class GameplayEntryPoint : MonoBehaviour
     {
@@ -35,9 +36,9 @@ namespace _Construction.Scripts.Game
             /// 
 
             var buildingsService = gameplayContainer.Resolve<BuildingsService>();
-            buildingsService.PlaceBuilding("Васян", GetRandomPosition());
-            buildingsService.PlaceBuilding("Стасян", GetRandomPosition());
-            buildingsService.PlaceBuilding("Борян", GetRandomPosition());
+            buildingsService.PlaceBuilding("dummy", GetRandomPosition());
+            buildingsService.PlaceBuilding("dummy", GetRandomPosition());
+            buildingsService.PlaceBuilding("dummy", GetRandomPosition());
 
             /// 
 

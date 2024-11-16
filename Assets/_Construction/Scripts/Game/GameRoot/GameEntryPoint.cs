@@ -1,11 +1,15 @@
-﻿using _Construction.Scripts.Utils;
-using System.Collections;
+﻿using System.Collections;
+using _Construction.Game.Gameplay.Root;
+using _Construction.Game.Settings;
+using _Construction.Game.State;
+using _Construction.Scripts.Game;
+using _Construction.Utils;
+using BaCon;
+using R3;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using R3;
-using BaCon;
 
-namespace _Construction.Scripts.Game
+namespace _Construction.Game.GameRoot
 {
     public class GameEntryPoint
     {
@@ -34,6 +38,10 @@ namespace _Construction.Scripts.Game
             _uiRoot = Object.Instantiate(prefabUIRoot);
             Object.DontDestroyOnLoad(_uiRoot.gameObject);
 
+            // Настройки приложения
+            var settingsProvider = new SettingsProvider();
+            _rootContainer.RegisterInstance<ISettingsProvider>(settingsProvider);
+            
             var gameStateProvider = new PlayerPrefsGameStateProvider();
             gameStateProvider.LoadSettingsState();
             _rootContainer.RegisterInstance<IGameStateProvider>(gameStateProvider);
@@ -43,8 +51,10 @@ namespace _Construction.Scripts.Game
         }
 
 
-        private void RunGame()
+        private async void RunGame()
         {
+            await _rootContainer.Resolve<ISettingsProvider>().LoadGameSettings();
+            
 #if UNITY_EDITOR
             var sceneName = SceneManager.GetActiveScene().name;
 

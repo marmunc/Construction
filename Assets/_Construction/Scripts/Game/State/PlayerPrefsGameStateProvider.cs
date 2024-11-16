@@ -1,9 +1,9 @@
-﻿using R3;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using _Construction.Scripts.Game;
+using R3;
 using UnityEngine;
 
-namespace _Construction.Scripts.Game
+namespace _Construction.Game.State
 {
     public class PlayerPrefsGameStateProvider : IGameStateProvider
     {
@@ -96,14 +96,14 @@ namespace _Construction.Scripts.Game
             {
                 Buildings = new List<BuildingEntity>
                 {
-                    new()
-                    {
-                        TypeId = "PRO100"
-                    },
-                    new()
-                    {
-                        TypeId = "STARIK"
-                    }
+                    // new()
+                    // {
+                    //     TypeId = "PRO100"
+                    // },
+                    // new()
+                    // {
+                    //     TypeId = "STARIK"
+                    // }
                 }
             };
 

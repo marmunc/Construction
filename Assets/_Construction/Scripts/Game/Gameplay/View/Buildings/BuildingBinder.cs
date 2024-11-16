@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Gameplay.View
+namespace _Construction.Game.Gameplay.View.Buildings
 {
     public class BuildingBinder : MonoBehaviour
     {
