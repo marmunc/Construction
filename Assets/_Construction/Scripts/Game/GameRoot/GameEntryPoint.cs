@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using _Construction.Game.Gameplay.Root;
+using _Construction.Game.MainMenu.Root;
 using _Construction.Game.Settings;
 using _Construction.Game.State;
 using _Construction.Scripts.Game;
@@ -60,7 +61,7 @@ namespace _Construction.Game.GameRoot
 
             if (sceneName == SceneNames.GAMEPLAY)
             {
-                var enterParams = new GameplayEnterParams("ddd.ccc", 1);
+                var enterParams = new GameplayEnterParams(1);
                 _coroutines.StartCoroutine(LoadAndStartGameplay(enterParams));
                 return;
             }

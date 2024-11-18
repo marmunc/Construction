@@ -1,7 +1,8 @@
 ﻿using _Construction.cmd;
+using _Construction.Game.State.cmd;
 using UnityEngine;
 
-namespace _Construction.Scripts.Game
+namespace _Construction.Game.Gameplay.Commands
 {
     public class CmdPlaceBuilding : ICommand
     {

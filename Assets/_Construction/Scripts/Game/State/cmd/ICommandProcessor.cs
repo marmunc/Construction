@@ -1,4 +1,4 @@
-﻿namespace _Construction.cmd
+﻿namespace _Construction.Game.State.cmd
 {
     public interface ICommand { } // Команда
 

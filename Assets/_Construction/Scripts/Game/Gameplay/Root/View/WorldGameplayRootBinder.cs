@@ -29,7 +29,7 @@ namespace Gameplay.View
 
         private void CreateBuilding(BuildingViewModel buildingViewModel)
         {
-            var buildingLevel = Random.Range(1, 4);
+            var buildingLevel = buildingViewModel.Level.CurrentValue;
             var buildingType = buildingViewModel.TypeId;
             var prefabBuildingLevelPath = $"Prefabs/Gameplay/Buildings/Building_{buildingType}_{buildingLevel}";
             var buildingPrefab = Resources.Load<BuildingBinder>(prefabBuildingLevelPath);

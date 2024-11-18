@@ -1,10 +1,11 @@
-﻿using BaCon;
-using Gameplay.View;
+﻿using _Construction.Game.Gameplay.Root;
+using _Construction.Scripts.Game;
+using BaCon;
 using MainMenu.View;
 using R3;
 using UnityEngine;
 
-namespace _Construction.Scripts.Game
+namespace _Construction.Game.MainMenu.Root
 {
     public class MainMenuEntryPoint : MonoBehaviour
     {
@@ -30,9 +31,7 @@ namespace _Construction.Scripts.Game
 
             Debug.Log($"MAIN MENU ENTRY POINT: Run main menu scene. Results: {enterParams?.Result}");
 
-            var saveFileName = "gang.bang";
-            var levelNumber = Random.Range(0, 300);
-            var gameplayEnterParams = new GameplayEnterParams(saveFileName, levelNumber);
+            var gameplayEnterParams = new GameplayEnterParams(0);
             var mainMenuExitParams = new MainMenuExitParams(gameplayEnterParams);
             var exitToGameplaySceneSignal = exitSignalSubj.Select(_ => mainMenuExitParams);
 

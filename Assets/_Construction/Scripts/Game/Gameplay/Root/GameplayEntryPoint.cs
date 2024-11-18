@@ -19,29 +19,6 @@ namespace _Construction.Game.Gameplay.Root
             var gameplayViewModelsContainer = new DIContainer(gameplayContainer);
             GameplayViewModelsRegistrations.Register(gameplayViewModelsContainer);
 
-            var gameStateProvider = gameplayContainer.Resolve<IGameStateProvider>();
-
-            ///
-
-            gameStateProvider.GameState.Buildings.ObserveAdd().Subscribe(e =>
-            {
-                var building = e.Value;
-                Debug.Log("Building placed. Type id: " +
-                          building.TypeId
-                          + " Id: " + building.Id
-                          + ", Position: " +
-                          building.Position.Value);
-            });
-
-            /// 
-
-            var buildingsService = gameplayContainer.Resolve<BuildingsService>();
-            buildingsService.PlaceBuilding("dummy", GetRandomPosition());
-            buildingsService.PlaceBuilding("dummy", GetRandomPosition());
-            buildingsService.PlaceBuilding("dummy", GetRandomPosition());
-
-            /// 
-
             // For test:
             _worldRootBinder.Bind(gameplayViewModelsContainer.Resolve<WorldGameplayRootViewModel>());
             gameplayViewModelsContainer.Resolve<UIGameplayRootViewModel>();
@@ -53,7 +30,7 @@ namespace _Construction.Game.Gameplay.Root
             var exitSceneSignalSubj = new Subject<Unit>();
             uiScene.Bind(exitSceneSignalSubj);
 
-            Debug.Log($"GAMEPLAY ENTRY POINT: save file name = {enterParams.SaveFileName}, level number = {enterParams.LevelNumber}");
+            Debug.Log($"GAMEPLAY ENTRY POINT: level number = {enterParams.MapId}");
 
             var mainMenuEnterParams = new MainMenuEnterParams("Fatality");
             var exitParams = new GameplayExitParams(mainMenuEnterParams);

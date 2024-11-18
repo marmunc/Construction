@@ -1,6 +1,12 @@
-﻿using _Construction.cmd;
+﻿using System.Linq;
+using _Construction.cmd;
+using _Construction.Game.State.cmd;
+using _Construction.Game.State.Entities.Buildings;
+using _Construction.Game.State.Root;
+using _Construction.Scripts.Game;
+using UnityEngine;
 
-namespace _Construction.Scripts.Game
+namespace _Construction.Game.Gameplay.Commands
 {
     public class CmdPlaceBuildingHandler : ICommandHandler<CmdPlaceBuilding>
     {
@@ -13,7 +19,15 @@ namespace _Construction.Scripts.Game
 
         public bool Handle(CmdPlaceBuilding command)
         {
-            var entityId = _gameState.GetEntityId();
+            var currentMap = _gameState.Maps.FirstOrDefault(m => m.Id == _gameState.CurrentMapId.CurrentValue);
+            if (currentMap == null)
+            {
+                Debug.Log($"Couldn't find MatState for id: {_gameState.CurrentMapId.CurrentValue}");
+                return false;
+            }
+                
+                
+            var entityId = _gameState.CreateEntityId();
             var newBuildingEntity = new BuildingEntity
             {
                 Id = entityId,
@@ -22,7 +36,7 @@ namespace _Construction.Scripts.Game
             };
 
             var newBuildingEntityProxy = new BuildingEntityProxy(newBuildingEntity);
-            _gameState.Buildings.Add(newBuildingEntityProxy);
+            currentMap.Buildings.Add(newBuildingEntityProxy);
 
             return true;
         }

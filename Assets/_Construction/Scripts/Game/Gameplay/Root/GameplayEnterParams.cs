@@ -1,14 +1,14 @@
-﻿namespace _Construction.Scripts.Game
+﻿using _Construction.Scripts.Game;
+
+namespace _Construction.Game.Gameplay.Root
 {
     public class GameplayEnterParams : SceneEnterParams
     {
-        public string SaveFileName { get; }
-        public int LevelNumber { get; }
+        public int MapId { get; }
 
-        public GameplayEnterParams(string saveFileName, int levelNumber) : base(SceneNames.GAMEPLAY)
+        public GameplayEnterParams(int mapId) : base(SceneNames.GAMEPLAY)
         {
-            SaveFileName = saveFileName;
-            LevelNumber = levelNumber;
+            MapId = mapId;
         }
     }
 }
