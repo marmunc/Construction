@@ -22,6 +22,8 @@ namespace _Construction.Game.Gameplay.Root
             var cmd = new CommandProcessor(gameStateProvider);
             cmd.RegisterHandler(new CmdPlaceBuildingHandler(gameState));
             cmd.RegisterHandler(new CmdCreateMapStateHandler(gameState, gameSettings));
+            cmd.RegisterHandler(new CmdResourcesAddHandler(gameState));
+            cmd.RegisterHandler(new CmdResourcesSpendHandler(gameState));
             container.RegisterInstance<ICommandProcessor>(cmd);
             // На данный момент мы знаем, что мы пытаемся загрузить карту. Но не знаем, есть ли ее состояние вообще.
             // Создание карты - это модель, так что работать с ней нужно через команды, поэтому нужен обработчик команд
@@ -46,6 +48,8 @@ namespace _Construction.Game.Gameplay.Root
                 gameSettings.BuildingsSettings, 
                 cmd)
             ).AsSingle();
+            
+            container.RegisterFactory(_ => new ResourcesService(gameState.Resources, cmd)).AsSingle();
         }
     }
 }

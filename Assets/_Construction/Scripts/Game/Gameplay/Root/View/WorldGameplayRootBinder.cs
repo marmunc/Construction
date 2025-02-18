@@ -1,4 +1,5 @@
-﻿using ObservableCollections;
+﻿using System;
+using ObservableCollections;
 using R3;
 using System.Collections.Generic;
 using _Construction.Game.Gameplay.View.Buildings;
@@ -10,9 +11,13 @@ namespace Gameplay.View
     {
         private readonly Dictionary<int, BuildingBinder> _createBuildingsMap = new();
         private readonly CompositeDisposable _disposables = new();
+        
+        private WorldGameplayRootViewModel _viewModel;
 
         public void Bind(WorldGameplayRootViewModel viewModel)
         {
+            _viewModel = viewModel;
+            
             foreach (var buildingViewModel in viewModel.AllBuildings)
             {
                 CreateBuilding(buildingViewModel);
@@ -46,6 +51,14 @@ namespace Gameplay.View
             {
                 Destroy(buildingBinder.gameObject);
                 _createBuildingsMap.Remove(buildingViewModel.BuildingEntityId);
+            }
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _viewModel.HandleTestInput();
             }
         }
     }

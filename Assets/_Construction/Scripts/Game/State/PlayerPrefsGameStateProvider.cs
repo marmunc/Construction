@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using _Construction.Game.State.GameResources;
 using _Construction.Game.State.Maps;
 using _Construction.Game.State.Root;
 using _Construction.Scripts.Game;
@@ -96,7 +97,13 @@ namespace _Construction.Game.State
             // Состояние по умолчанию из настроек, мы делаем фейк
             _gameStateOrigin = new GameState
             {
-                Maps = new List<MapState>()
+                Maps = new List<MapState>(),
+                Resources = new List<ResourceData>()
+                {
+                    new() { Amount = 0, ResourceType = ResourceType.SoftCurrency },
+                    new() { Amount = 0, ResourceType = ResourceType.HardCurrency },
+                    new() { Amount = 0, ResourceType = ResourceType.Wood }
+                }
             };
 
             return new GameStateProxy(_gameStateOrigin);

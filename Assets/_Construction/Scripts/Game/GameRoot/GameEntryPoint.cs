@@ -87,9 +87,9 @@ namespace _Construction.Game.GameRoot
 
             yield return LoadScene(SceneNames.BOOT);
 
-            var isGameStatLoaded = false;
-            _rootContainer.Resolve<IGameStateProvider>().LoadGameState().Subscribe(_ => isGameStatLoaded = true);
-            yield return new WaitUntil(() => isGameStatLoaded);
+            var isGameStateLoaded = false;
+            _rootContainer.Resolve<IGameStateProvider>().LoadGameState().Subscribe(_ => isGameStateLoaded = true);
+            yield return new WaitUntil(() => isGameStateLoaded);
 
             yield return LoadScene(SceneNames.GAMEPLAY);
 
