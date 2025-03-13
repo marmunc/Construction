@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Linq;
 using _Construction.cmd;
+using _Construction.Game.Common;
 using _Construction.Game.Gameplay.Commands;
 using _Construction.Game.Gameplay.Services;
 using _Construction.Game.Settings;
 using _Construction.Game.State.cmd;
 using _Construction.Scripts.Game;
 using BaCon;
+using R3;
 
 namespace _Construction.Game.Gameplay.Root
 {
@@ -18,6 +20,8 @@ namespace _Construction.Game.Gameplay.Root
             var gameState = gameStateProvider.GameState;
             var settingsProvider = container.Resolve<ISettingsProvider>();
             var gameSettings = settingsProvider.GameSettings;
+            
+            container.RegisterInstance(AppConstants.EXIT_SCENE_REQUEST_TAG, new Subject<Unit>());
 
             var cmd = new CommandProcessor(gameStateProvider);
             cmd.RegisterHandler(new CmdPlaceBuildingHandler(gameState));
